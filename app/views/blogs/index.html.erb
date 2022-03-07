@@ -1,0 +1,100 @@
+<p id="notice"><%= notice %></p>
+
+<div class="toppage">
+<h1 class="top">カレンダー</h1>
+<br>
+
+<div class="tab-panel">
+  <!--タブ-->
+  <ul class="tab-group">
+    <li class="tab tab-A is-active">このアプリケーションについて</li>
+    <li class="tab tab-B">アプリケーションの使い方</li>
+    <!--<li class="tab tab-C">Tab-C</li>-->  
+ </ul>
+
+  <!--タブを切り替えて表示するコンテンツ-->
+  <div class="panel-group">
+  <div class="panel tab-A is-show">予定をわすれてしまう人のためにカレンダーのアプリケーションを作りました。
+  <br>
+  手帳に記録するよりも、記録、修正、削除の手間が省けて効果的です。
+  <br>
+  メモ機能があるので、通常のカレンダーよりも詳細なことを記録できます。
+  </div>
+  <div class="panel tab-B">
+    下にあるスケジュール投稿フォームから
+    スケジュールのタイトルと内容を投稿してください。
+    <br>
+    
+    投稿したスケジュールが今後の予定一覧とカレンダーに表示されます・
+  </div>
+  <!--<div class="panel tab-C">Content-C</div>-->
+  </div>
+</div>
+
+<div class="row">
+<div class="col-md-4">
+	<div class="schedule"><span  class="btn btn-secondary">今後の予定一覧</span></div>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th>タイトル</th>
+      <th>日程</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @blogs.each do |blog| %>
+      <tr>
+        <td><%= link_to blog.title , blog %></td>
+        <td><%= blog.start_time.strftime("%m-%d") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span  class="btn btn-secondary">スケジュール投稿フォーム</span>
+
+<%= form_with(model: @blog, local: true) do |form| %>
+
+  <div class="title">
+    <div class="form-tag">タイトル</div>
+    <%= form.text_field :title %>
+  </div>
+
+
+  <div class="content">
+    <div class="form-tag">内容</div>
+    <%= form.text_field :content %>
+  </div>
+
+    <div class="time">
+    <div class="form-tag">時間</div>
+    <%= form.datetime_select :start_time %>
+  </div>
+
+ <div class="submit">
+    <%= form.submit %>
+ </div>
+<% end %>
+</div>
+
+<br>
+
+
+<br>
+<div class="col-md-8">
+<%= month_calendar events: @blogs do |date, blogs| %>
+  <%= date.day %>
+
+  <% blogs.each do |blog| %>
+    <div>
+      <%= link_to blog.title, blog %>
+    </div>
+  <% end %>
+<% end %>
+</div>
+</div>
+</div>
+
+<%= stylesheet_link_tag "custom", :media => "all" %>
+<%= javascript_pack_tag 'test' %>
